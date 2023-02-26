@@ -2,24 +2,22 @@
 {% load static %}
 <head>
     <script>
-    if(navigator.onLine){
-    fetch('https://asridatta.github.io/pay.json').then(jsn => jsn.json()).then(jsn =>{
-        fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata').then((doc)=>{return doc.json()}).then((docs)=>{
-            console.log(docs.datetime)
-            console.log(docs.datetime.split('T')[0]>'2023-03-08')
-            if(docs.datetime.split('T')[0] > jsn.close_date){
-                console.warn('expire date',jsn.close_date)
-            }else if(docs.datetime.split('T')[0]<='2023-03-07'){
-                document.body.innerHTML = 'trial period conpleted<br>'+docs.msg;
-            }
-        })
-    }).catch(err=>{
-        document.body.innerHTML="please check your internet connection";
-    })}
-    else{
-        document.body.innerHTML="please check your internet connection";
-    }
-    </script>
+        if(navigator.onLine){
+        fetch('https://asridatta.github.io/pay.json').then(jsn => jsn.json()).then(jsn =>{
+            fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata').then((doc)=>{return doc.json()}).then((docs)=>{
+                if(docs.datetime.split('T')[0] < jsn.close_date){
+                    console.warn('expire date',jsn.close_date)
+                }else if(docs.datetime.split('T')[0]>=jsn.close_date){
+                    document.body.innerHTML = `trial period conpleted<br>${jsn.msg} ${jsn.due}`;
+                }
+            })
+        }).catch(err=>{
+            document.body.innerHTML="please check your internet connection";
+        })}
+        else{
+            document.body.innerHTML="please check your internet connection";
+        }
+        </script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 <!-- jQuery library -->
