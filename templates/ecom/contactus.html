@@ -34,22 +34,9 @@
   {%else%}
     {% include "ecom/navbar.html" %}
   {%endif%}
-
-  <center>
-    <h3 class='alert alert-success'>Send Us Your Valuable Feedback !</h3>
-
-    <form method="POST">
-      <!-- Very Important csrf Token -->
-      {% csrf_token %}
-      <div class="form-group">
-        <p>
-        <h3>{{ form.as_p }}</h3>
-        </p>
-        <br>
-        <input type="submit" value="Send Message" class='btn btn-primary btn-lg'>
-      </div>
-    </form>
-  </center>
+  <h3>email:email@email.com<br>
+  phone: 1234567890
+  </h3>
   {% include "ecom/footer.html" %}
 </body>
 <!--
