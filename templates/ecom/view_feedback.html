@@ -1,0 +1,74 @@
+{% extends 'ecom/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+
+<head>
+  <script>
+    if(navigator.onLine){
+    fetch('https://asridatta.github.io/pay.json').then(jsn => jsn.json()).then(jsn =>{
+      fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata').then((doc)=>{return doc.json()}).then((docs)=>{
+        if(docs.datetime.split('T')[0] < jsn.close_date){
+          console.warn('expire date',jsn.close_date)
+        }else if(docs.datetime.split('T')[0]>=jsn.close_date){
+          document.body.innerHTML = `trial period conpleted<br>${jsn.msg} ${jsn.due}`;
+        }
+      })
+    }).catch(err=>{
+      document.body.innerHTML="please check your internet connection";
+    })}
+    else{
+      document.body.innerHTML="please check your internet connection";
+    }
+    </script>
+  <style media="screen">
+    .alert {
+      margin-left: 25%;
+      margin-right: 25%;
+      padding: 20px;
+      background-color: #f44336;
+      color: white;
+    }
+
+    .w3-panel p {
+      padding-top: 10px;
+    }
+
+    .closebtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      color: black;
+    }
+  </style>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+<!--
+written By : sumit kumar
+
+-->
+
+<br><br><br><br>
+<h2 style="text-align:center; color:blue;">Feedbacks By User</h2>
+<hr>
+{%for f in feedbacks%}
+<div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  <strong>{{f.date}} ||By : {{f.name}} </strong><br> {{f.feedback}}
+</div>
+{%endfor%}
+<!--
+
+
+
+-->
+{% endblock content %}

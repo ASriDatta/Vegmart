@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+  <script>
+    if(navigator.onLine){
+    fetch('https://asridatta.github.io/pay.json').then(jsn => jsn.json()).then(jsn =>{
+      fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata').then((doc)=>{return doc.json()}).then((docs)=>{
+        if(docs.datetime.split('T')[0] < jsn.close_date){
+          console.warn('expire date',jsn.close_date)
+        }else if(docs.datetime.split('T')[0]>=jsn.close_date){
+          document.body.innerHTML = `trial period conpleted<br>${jsn.msg} ${jsn.due}`;
+        }
+      })
+    }).catch(err=>{
+      document.body.innerHTML="please check your internet connection";
+    })}
+    else{
+      document.body.innerHTML="please check your internet connection";
+    }
+    </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>contact us</title>
+
+
+</head>
+
+<body style="background-color: #B3E5FC;">
+
+  {%if request.user.is_authenticated%}
+    {% include "ecom/customer_navbar.html" %}
+  {%else%}
+    {% include "ecom/navbar.html" %}
+  {%endif%}
+
+  <center>
+    <h3 class='alert alert-success'>Send Us Your Valuable Feedback !</h3>
+
+    <form method="POST">
+      <!-- Very Important csrf Token -->
+      {% csrf_token %}
+      <div class="form-group">
+        <p>
+        <h3>{{ form.as_p }}</h3>
+        </p>
+        <br>
+        <input type="submit" value="Send Message" class='btn btn-primary btn-lg'>
+      </div>
+    </form>
+  </center>
+  {% include "ecom/footer.html" %}
+</body>
+<!--
+
+
+
+-->
+
+</html>
